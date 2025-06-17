@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard Reminder Kerjasama</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Dashboard Reminder Kerjasama</h1>
+        <p>Menampilkan data kerjasama dari sheet Klinis & Manajemen.</p>
+
+        <div class="summary-container">
+            <div class="stat-card">
+                <h2>Total Kerjasama</h2>
+                <p id="total-kerjasama">-</p>
+            </div>
+            <div class="stat-card">
+                <h2>Perlu Perpanjangan</h2>
+                <p id="perlu-perpanjangan">-</p>
+            </div>
+            <div class="stat-card">
+                <h2>Status Berjalan</h2>
+                <p id="status-berjalan">-</p>
+            </div>
+        </div>
+
+        <div class="controls">
+            <input type="text" id="search-box" placeholder="Cari berdasarkan mitra atau judul...">
+        </div>
+
+        <div id="loading">Memuat data, harap tunggu...</div>
+
+        <table id="kerjasama-table">
+            <thead>
+                <tr>
+                    <th>Nama Mitra</th>
+                    <th>Judul Kerjasama</th>
+                    <th>Tanggal Selesai</th>
+                    <th>Status</th>
+                    <th>Sumber Data</th>
+                </tr>
+            </thead>
+            <tbody id="table-body">
+                </tbody>
+        </table>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>
