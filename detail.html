@@ -3,38 +3,20 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard Reminder Kerjasama</title>
+    <title>Detail Kerjasama</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
     <div class="container">
-        <h1>Dashboard Reminder Kerjasama</h1>
-        <p>Menampilkan data kerjasama dari kategori Klinis & Manajemen. Klik pada salah satu kategori di bawah untuk melihat detailnya.</p>
-        
-        <div class="summary-container">
-            <a href="detail.html">
-                <div class="stat-card"><h2>Total Kerjasama</h2><p id="total-kerjasama">-</p></div>
-            </a>
-            <a href="detail.html?status=Perlu Proses Perpanjangan">
-                <div class="stat-card"><h2>Perlu Perpanjangan</h2><p id="perlu-perpanjangan">-</p></div>
-            </a>
-            <a href="detail.html?status=Berjalan">
-                <div class="stat-card"><h2>Status Berjalan</h2><p id="status-berjalan">-</p></div>
-            </a>
-            <a href="detail.html?status=Proses Oleh TU">
-                <div class="stat-card"><h2>Proses Oleh TU</h2><p id="proses-tu">-</p></div>
-            </a>
-            <a href="detail.html?status=Proses Mitra">
-                <div class="stat-card"><h2>Proses Mitra</h2><p id="proses-mitra">-</p></div>
-            </a>
-            <a href="detail.html?status=Tidak Diperpanjang">
-                <div class="stat-card"><h2>Tidak Diperpanjang</h2><p id="tidak-diperpanjang">-</p></div>
-            </a>
-            </div>
+        <a href="index.html" class="back-link">&larr; Kembali ke Dashboard</a>
+        <h1 id="detail-title">Memuat...</h1>
 
-        <div class="controls"><input type="text" id="search-box" placeholder="Cari berdasarkan mitra atau judul..."></div>
+        <div class="controls">
+            <input type="text" id="search-box" placeholder="Cari di dalam kategori ini...">
+        </div>
+
         <div id="loading">Memuat data, harap tunggu...</div>
-        
+
         <div class="table-container">
             <table id="kerjasama-table">
                 <thead>
@@ -47,7 +29,8 @@
                         <th>Aksi</th>
                     </tr>
                 </thead>
-                <tbody id="table-body"></tbody>
+                <tbody id="table-body">
+                    </tbody>
             </table>
         </div>
     </div>
@@ -71,6 +54,6 @@
         </div>
     </div>
 
-    <script src="script.js"></script>
+    <script src="detail-script.js"></script>
 </body>
 </html>

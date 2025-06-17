@@ -1,15 +1,23 @@
-// GANTI SELURUH ISI FILE script.js dan detail-script.js DENGAN INI
-
+// !!! PENTING: Ganti URL di bawah dengan URL Web App Anda !!!
 const WEB_APP_URL = 'https://script.google.com/macros/s/AKfycby_4XcSdK0FddjZxi1sSI4wdHmTfZfkU22tFu3DtlN3XqfadNiEngJYCu4qaEJakr7l/exec';
+// !!! ----------------------------------------------- !!!
 
 document.addEventListener('DOMContentLoaded', () => {
     const tableBody = document.getElementById('table-body');
     const loadingDiv = document.getElementById('loading');
     const searchBox = document.getElementById('search-box');
+    const detailTitle = document.getElementById('detail-title');
     const modal = document.getElementById('detail-modal');
     const closeModalBtn = document.querySelector('.close-btn');
-    let allData = [];
-    let currentlyDisplayedData = [];
+
+    const urlParams = new URLSearchParams(window.location.search);
+    const filterStatus = urlParams.get('status');
+    
+    // --- PERBAIKAN 1: Variabel baru untuk data yang sedang ditampilkan ---
+    let pageData = []; // Menyimpan data asli untuk kategori ini
+    let currentlyDisplayedData = []; // Menyimpan data yang tampil di tabel (bisa data asli atau hasil filter)
+
+    detailTitle.textContent = filterStatus ? `Daftar Kerjasama: "${filterStatus}"` : 'Semua Kerjasama';
 
     function showModal(itemData) {
         const fields = ['mitra1', 'mitra2', 'judul-kerjasama', 'dsm1', 'dsm2', 'dsrs', 'tgl-mulai', 'tgl-selesai', 'reminder', 'keterangan'];
@@ -52,10 +60,11 @@ document.addEventListener('DOMContentLoaded', () => {
     closeModalBtn.onclick = () => { modal.style.display = 'none'; };
     window.onclick = (event) => { if (event.target == modal) { modal.style.display = 'none'; } };
 
+    // Fungsi renderTable tidak berubah
     function renderTable(dataToRender) {
         tableBody.innerHTML = '';
         if (dataToRender.length === 0) {
-            tableBody.innerHTML = '<tr><td colspan="6" style="text-align:center;">Tidak ada data yang cocok.</td></tr>';
+            tableBody.innerHTML = '<tr><td colspan="6" style="text-align:center;">Tidak ada data untuk ditampilkan.</td></tr>';
             return;
         }
         dataToRender.forEach((item, index) => {
@@ -63,8 +72,8 @@ document.addEventListener('DOMContentLoaded', () => {
             const tglSelesai = item.tanggalSelesai ? new Date(item.tanggalSelesai).toLocaleDateString('id-ID', { day: '2-digit', month: 'long', year: 'numeric' }) : 'N/A';
             const statusClass = `status-${(item.status || 'default').toLowerCase().replace(/ /g, '-')}`;
             row.innerHTML = `
-                <td><div class="truncate" title="${item.mitra}">${item.mitra}</div></td>
-                <td><div class="truncate" title="${item.judul}">${item.judul}</div></td>
+                <td>${item.mitra}</td>
+                <td>${item.judul}</td>
                 <td>${tglSelesai}</td>
                 <td><span class="status-pill ${statusClass}">${item.status || 'N/A'}</span></td>
                 <td>${item.sumberSheet}</td>
@@ -73,19 +82,12 @@ document.addEventListener('DOMContentLoaded', () => {
             tableBody.appendChild(row);
         });
     }
-
-    function updateSummaryStats(data) {
-        document.getElementById('total-kerjasama').textContent = data.length;
-        document.getElementById('perlu-perpanjangan').textContent = data.filter(d => d.status === 'Perlu Proses Perpanjangan').length;
-        document.getElementById('status-berjalan').textContent = data.filter(d => d.status === 'Berjalan').length;
-        document.getElementById('proses-tu').textContent = data.filter(d => d.status === 'Proses Oleh TU').length;
-        document.getElementById('proses-mitra').textContent = data.filter(d => d.status === 'Proses Mitra').length;
-        document.getElementById('tidak-diperpanjang').textContent = data.filter(d => d.status === 'Tidak Diperpanjang').length;
-    }
-
+    
+    // --- PERBAIKAN 2: Event listener sekarang menggunakan data yang tepat ---
     tableBody.addEventListener('click', (event) => {
         if (event.target.classList.contains('detail-btn')) {
             const index = event.target.dataset.index;
+            // Menggunakan `currentlyDisplayedData` agar selalu benar, baik difilter maupun tidak
             showModal(currentlyDisplayedData[index]);
         }
     });
@@ -94,28 +96,28 @@ document.addEventListener('DOMContentLoaded', () => {
         .then(response => response.json())
         .then(result => {
             if (result.status === 'success') {
-                allData = result.data;
-                allData.sort((a, b) => new Date(a.tanggalSelesai) - new Date(b.tanggalSelesai));
-                currentlyDisplayedData = allData;
+                let allData = result.data;
+                pageData = filterStatus ? allData.filter(item => item.status === filterStatus) : allData;
+                pageData.sort((a, b) => new Date(a.tanggalSelesai) - new Date(b.tanggalSelesai));
+                
+                // --- PERBAIKAN 3: Inisialisasi data yang ditampilkan ---
+                currentlyDisplayedData = pageData;
                 renderTable(currentlyDisplayedData);
-                updateSummaryStats(allData);
             } else {
                 tableBody.innerHTML = `<tr><td colspan="6" style="text-align:center; color: red;"><b>Error:</b> ${result.message}</td></tr>`;
             }
         })
-        .catch(error => {
-            tableBody.innerHTML = `<tr><td colspan="6" style="text-align:center; color: red;">Gagal memuat data. Periksa koneksi atau URL Web App. Error: ${error.message}</td></tr>`;
-        })
-        .finally(() => {
-            loadingDiv.style.display = 'none';
-        });
+        .catch(error => { tableBody.innerHTML = `<tr><td colspan="6" style="text-align:center; color: red;">Gagal memuat data: ${error.message}</td></tr>`; })
+        .finally(() => { loadingDiv.style.display = 'none'; });
 
+    // --- PERBAIKAN 4: Event listener pencarian sekarang memperbarui data yang ditampilkan ---
     searchBox.addEventListener('keyup', () => {
         const searchTerm = searchBox.value.toLowerCase();
-        currentlyDisplayedData = allData.filter(item => 
+        const filteredResult = pageData.filter(item => 
             item.mitra.toLowerCase().includes(searchTerm) ||
             item.judul.toLowerCase().includes(searchTerm)
         );
+        currentlyDisplayedData = filteredResult;
         renderTable(currentlyDisplayedData);
     });
 });
