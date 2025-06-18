@@ -50,6 +50,7 @@ a {
     }
 }
 
+/* Penambahan: Efek hover pada kartu */
 .stat-card {
     background-color: #ecf0f1;
     padding: 20px;
@@ -57,14 +58,13 @@ a {
     text-align: center;
     /* Penambahan: Transisi untuk efek hover yang mulus */
     transition: transform 0.2s ease, box-shadow 0.2s ease;
+    cursor: pointer; /* Menambahkan cursor pointer untuk menunjukkan bahwa itu interaktif */
 }
 
-/* Penambahan: Efek hover pada kartu */
-.stat-link:hover .stat-card {
+.stat-card:hover { /* Efek hover langsung pada stat-card */
     transform: translateY(-5px);
     box-shadow: 0 4px 15px rgba(0,0,0,0.1);
 }
-
 .stat-card h2 {
     margin: 0 0 10px 0;
     font-size: 1em;
