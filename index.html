@@ -7,6 +7,12 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
+    <header class="main-header">
+        <div class="header-content">
+            <img src="logorssmweb.png" alt="Logo RSUD dr. Soedono Madiun" class="header-logo">
+            </div>
+    </header>
+
     <div class="container">
         <h1>Dashboard Reminder Kerjasama</h1>
         <p>Menampilkan data kerjasama dari kategori Klinis & Manajemen. Klik pada salah satu kategori di bawah untuk melihat detailnya.</p>
@@ -30,6 +36,12 @@
             <a href="detail.html?status=Tidak Diperpanjang">
                 <div class="stat-card"><h2>Tidak Diperpanjang</h2><p id="tidak-diperpanjang">-</p></div>
             </a>
+            <a href="detail.html?kategori=Klinis">
+                <div class="stat-card"><h2>Kerjasama Klinis</h2><p id="total-klinis">-</p></div>
+            </a>
+            <a href="detail.html?kategori=Manajemen">
+                <div class="stat-card"><h2>Kerjasama Manajemen</h2><p id="total-manajemen">-</p></div>
+            </a>
             </div>
 
         <div class="controls"><input type="text" id="search-box" placeholder="Cari berdasarkan mitra atau judul..."></div>
@@ -39,18 +51,32 @@
             <table id="kerjasama-table">
                 <thead>
                     <tr>
-                        <th>Nama Mitra</th>
-                        <th>Judul Kerjasama</th>
-                        <th>Tanggal Selesai</th>
-                        <th>Status</th>
-                        <th>Sumber Data</th>
+                        <th data-sort="mitra">Nama Mitra <span class="sort-icon"></span></th>
+                        <th data-sort="judul">Judul Kerjasama <span class="sort-icon"></span></th>
+                        <th data-sort="tanggalSelesai">Tanggal Selesai <span class="sort-icon"></span></th>
+                        <th data-sort="status">Status <span class="sort-icon"></span></th>
+                        <th data-sort="sumberSheet">Sumber Data <span class="sort-icon"></span></th>
                         <th>Aksi</th>
                     </tr>
                 </thead>
                 <tbody id="table-body"></tbody>
             </table>
         </div>
+
+        <div class="table-footer">
+            <div id="showing-entries"></div>
+            <div class="pagination">
+                <button id="prev-btn" class="pagination-btn">&laquo; Previous</button>
+                <div id="page-numbers"></div>
+                <button id="next-btn" class="pagination-btn">Next &raquo;</button>
+            </div>
+        </div>
+
     </div>
+
+    <footer class="main-footer">
+        <p>&copy; 2025 Rasyid at RSUD dr. Soedono Madiun. All rights reserved.</p>
+    </footer>
 
     <div id="detail-modal" class="modal">
         <div class="modal-content">

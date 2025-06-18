@@ -29,10 +29,14 @@ a {
 .summary-container {
     display: grid;
     /* Mulai dengan 2 kolom di layar kecil ke sedang */
-    grid-template-columns: repeat(2, 1fr);
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); /* Menggunakan auto-fit untuk responsivitas yang lebih baik */
     gap: 15px;
     margin-bottom: 30px;
+    justify-content: center;
+    content: '';
+    flex-grow: 1; /* Tambahkan ini untuk memusatkan item grid */
 }
+
 /* Menjadi 3 kolom di layar yang lebih besar */
 @media (min-width: 900px) {
     .summary-container {
@@ -210,4 +214,173 @@ tbody tr:hover {
 .modal-grid dd {
     margin: 0;
     word-break: break-word;
+}
+/* Table Footer & Pagination */
+.table-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 20px;
+    flex-wrap: wrap; /* Allow wrapping on smaller screens */
+    gap: 10px; /* Space between elements */
+}
+
+#showing-entries {
+    font-size: 0.9em;
+    color: #555;
+}
+
+.pagination {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.pagination-btn {
+    background-color: #3498db;
+    color: white;
+    border: none;
+    padding: 8px 12px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 0.9em;
+    transition: background-color 0.2s ease;
+}
+
+.pagination-btn:hover:not(:disabled) {
+    background-color: #2980b9;
+}
+
+.pagination-btn:disabled {
+    background-color: #cccccc;
+    cursor: not-allowed;
+}
+
+.page-number {
+    padding: 8px 12px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    cursor: pointer;
+    margin: 0 2px;
+    transition: background-color 0.2s ease, border-color 0.2s ease;
+    font-size: 0.9em;
+}
+
+.page-number:hover {
+    background-color: #f1f1f1;
+}
+
+.page-number.active {
+    background-color: #3498db;
+    color: white;
+    border-color: #3498db;
+    font-weight: bold;
+}
+
+/* Sorting Icons */
+th[data-sort] {
+    cursor: pointer;
+    position: relative; /* For positioning the sort icon */
+    padding-right: 25px; /* Make space for the icon */
+}
+
+.sort-icon {
+    position: absolute;
+    right: 8px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 0;
+    height: 0;
+    border-left: 5px solid transparent;
+    border-right: 5px solid transparent;
+    opacity: 0.4; /* Default subtle icon */
+    transition: opacity 0.2s ease;
+}
+
+th[data-sort]:hover .sort-icon {
+    opacity: 0.7; /* More visible on hover */
+}
+
+.sort-icon.asc {
+    border-bottom: 5px solid #fff; /* Up arrow for ascending */
+    opacity: 1;
+}
+
+.sort-icon.desc {
+    border-top: 5px solid #fff; /* Down arrow for descending */
+    opacity: 1;
+}
+
+/* Responsive adjustments for table footer */
+@media (max-width: 600px) {
+    .table-footer {
+        flex-direction: column;
+        align-items: center;
+    }
+    .pagination {
+        margin-top: 10px;
+        justify-content: center;
+        flex-wrap: wrap;
+    }
+    .page-number, .pagination-btn {
+        margin-bottom: 5px; /* Add some space when wrapping */
+    }
+}
+/* Header Styling */
+.main-header {
+    background-color: #fff; /* Warna latar belakang header */
+    border-bottom: 1px solid #ddd; /* Garis bawah pemisah */
+    padding: 10px 20px;
+    margin-bottom: 20px; /* Jarak antara header dan konten utama */
+    box-shadow: 0 2px 5px rgba(0,0,0,0.05); /* Sedikit bayangan */
+    display: flex;
+    align-items: center;
+    justify-content: flex-start; /* Logo di kiri */
+}
+
+.header-content {
+    max-width: 1200px; /* Lebar konten header agar sejajar dengan container */
+    margin: 0 auto; /* Tengah konten */
+    width: 100%;
+    display: flex;
+    align-items: center;
+}
+
+.header-logo {
+    height: 50px; /* Tinggi logo, sesuaikan jika perlu */
+    max-width: 100%; /* Pastikan logo responsif */
+    object-fit: contain; /* Memastikan logo tidak terdistorsi */
+}
+
+/* Optional: Jika Anda menambahkan judul di header */
+.header-title {
+    margin-left: 15px;
+    color: #2c3e50;
+    font-size: 1.5em;
+}
+
+/* Footer Styling */
+.main-footer {
+    background-color: #34495e; /* Warna latar belakang footer, bisa disesuaikan */
+    color: #fff;
+    text-align: center;
+    padding: 20px;
+    margin-top: 30px; /* Jarak antara konten utama dan footer */
+    border-top: 1px solid #4a667d; /* Garis atas pemisah */
+}
+
+.main-footer p {
+    margin: 0;
+    font-size: 0.9em;
+}
+
+/* Penyesuaian agar konten utama tidak menempel pada header/footer */
+body {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh; /* Memastikan footer selalu di bawah halaman */
+}
+
+.container {
+    flex-grow: 1; /* Kontainer utama akan mengisi ruang yang tersedia */
 }
